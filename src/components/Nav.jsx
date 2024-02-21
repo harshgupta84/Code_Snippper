@@ -73,7 +73,7 @@ const Nav = ({ setSearch }) => {
             <NavbarToggle />
           </div>
         ) : (
-          <NavbarLink href="/login">Login</NavbarLink>
+          <Link to="/login"><NavbarLink >Login</NavbarLink></Link>
         )}
         <NavbarCollapse>
           <NavbarLink href="/" active>

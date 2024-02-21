@@ -24,7 +24,7 @@ const App = () => {
 
             <Route
               path="/mynotes"
-              Component={() => <MyNotes search={search}/>}
+              Component={() => <MyNotes search={search} />}
             />
 
             <Route path="/createnote" Component={CreateNote} />
