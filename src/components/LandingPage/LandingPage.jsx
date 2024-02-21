@@ -4,6 +4,7 @@ import Features from "./Features";
 import RegisterScreen from "../Register/RegisterScreen";
 import CreateNote from "../CreateNotes/CreateNote";
 import { Accordion } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -21,12 +22,16 @@ const LandingPage = () => {
         </p>
       </div>
       <div className="mt-10 flex flex-wrap gap-16 justify-center ">
-        <Button size="xl" href="/login" gradientDuoTone="purpleToBlue">
-          LOGIN
-        </Button>
-        <Button size="xl" href="/register" gradientDuoTone="cyanToBlue">
-          SIGNUP
-        </Button>
+        <Link to="/login">
+          <Button size="xl" gradientDuoTone="purpleToBlue">
+            LOGIN
+          </Button>
+        </Link>
+        <Link to="/register">
+          <Button size="xl" gradientDuoTone="cyanToBlue">
+            SIGNUP
+          </Button>
+        </Link>
       </div>
       <div className=" mt-44 ml-20 mr-20 mb-10">
         <Features />

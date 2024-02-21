@@ -91,7 +91,9 @@ const MyNotes = ({ search }) => {
                 <div className="flex ">
                   <Accordion.Title>{noteItem.title}</Accordion.Title>
 
-                  <Button href={`/note/${noteItem._id}`}>Edit</Button>
+                  <Link to={`/note/${noteItem._id}`}>
+                    <Button>Edit</Button>
+                  </Link>
                   <Button
                     color="warning"
                     className="mx-2"

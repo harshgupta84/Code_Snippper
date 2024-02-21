@@ -65,7 +65,10 @@ const Nav = ({ setSearch }) => {
                 <span className="block text-sm">My Notes</span>
               </Link>
               <DropdownDivider />
-              <DropdownItem href="/profile">Dashboard</DropdownItem>
+              <Link to="/profile">
+                {" "}
+                <DropdownItem>Dashboard</DropdownItem>
+              </Link>
               <DropdownDivider />
               <DropdownItem onClick={logoutHandler}>Sign out</DropdownItem>
             </Dropdown>
@@ -73,7 +76,9 @@ const Nav = ({ setSearch }) => {
             <NavbarToggle />
           </div>
         ) : (
-          <Link to="/login"><NavbarLink >Login</NavbarLink></Link>
+          <Link to="/login">
+            <NavbarLink>Login</NavbarLink>
+          </Link>
         )}
         <NavbarCollapse>
           <NavbarLink href="/" active>
