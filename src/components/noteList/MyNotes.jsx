@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Accordion, Button, Card, Badge, Blockquote } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteNoteAction, listNotes } from "../../actions/notesAction";
-import LoadingSpinner from "../utils/LodingSpinner"; // Corrected import
+import LoadingSpinner from "../utils/LodingSpinner";// Corrected import
 import ErrorMessage from "../utils/ErrorMessage";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -52,6 +52,10 @@ const MyNotes = ({ search }) => {
     }
   };
 
+  const generateShareableLink = (id) => {
+    return `${window.location.origin}/note/${id}`;
+  };
+
   const renderCodeBlock = (code, language) => {
     return (
       <div key={Math.random()} style={{ textAlign: "left" }}>
@@ -67,9 +71,9 @@ const MyNotes = ({ search }) => {
   return (
     <div className="mt-10 mb-4 min-h-screen">
       {error && <ErrorMessage error={error} />}
-      <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         Welcome{" "}
-        <span class="text-blue-600 dark:text-blue-500">
+        <span className="text-blue-600 dark:text-blue-500">
           {userInfo && userInfo.name}
         </span>{" "}
         to CodeSnipper
@@ -100,6 +104,16 @@ const MyNotes = ({ search }) => {
                     onClick={() => deleteHandler(noteItem._id)}
                   >
                     Delete
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      const shareableLink = generateShareableLink(
+                        noteItem._id
+                      );
+                      alert("Shareable Link: " + shareableLink);
+                    }}
+                  >
+                    Share
                   </Button>
                 </div>
               </Card>
