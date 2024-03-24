@@ -10,7 +10,8 @@ import ProfileScreen from "./components/ProfileScreen/ProfileScreen";
 import MyNotes from "./components/noteList/MyNotes";
 import CreateNote from "./components/CreateNotes/CreateNote";
 import SingleNote from "./components/CreateNotes/SingleNote";
-import viewNotes from "./viewNote/viewNotes";
+
+import ViewNotes from "./viewNote/viewNotes";
 
 const App = () => {
   const [search, setSearch] = useState("");
@@ -32,7 +33,7 @@ const App = () => {
             <Route path="/login" Component={LoginScreen} />
             <Route path="/register" Component={RegisterScreen} />
             <Route path="note/:id" Component={SingleNote} />
-            <Route path="note/view/:id" Component={viewNotes} />
+            <Route path="note/view/:id" Component={ViewNotes} />
             <Route path="/profile" Component={ProfileScreen} />
           </Routes>
         </main>
