@@ -23,6 +23,7 @@ const reducer = combineReducers({
   noteUpdate: noteUpdateReducer,
   noteDelete: noteDeleteReducer,
   userUpdate: userUpdateReducer,
+  
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

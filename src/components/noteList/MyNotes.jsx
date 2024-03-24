@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Accordion, Button, Card, Badge, Blockquote } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteNoteAction, listNotes } from "../../actions/notesAction";
-import LoadingSpinner from "../utils/LodingSpinner";// Corrected import
+import LoadingSpinner from "../utils/LodingSpinner"; // Corrected import
 import ErrorMessage from "../utils/ErrorMessage";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
+import { Toast } from "flowbite-react";
 
 const MyNotes = ({ search }) => {
   console.log(search);
@@ -53,7 +54,7 @@ const MyNotes = ({ search }) => {
   };
 
   const generateShareableLink = (id) => {
-    return `${window.location.origin}/note/${id}`;
+    return `${window.location.origin}/note/view/${id}`;
   };
 
   const renderCodeBlock = (code, language) => {
@@ -107,10 +108,8 @@ const MyNotes = ({ search }) => {
                   </Button>
                   <Button
                     onClick={() => {
-                      const shareableLink = generateShareableLink(
-                        noteItem._id
-                      );
-                      alert("Shareable Link: " + shareableLink);
+                      const shareableLink = generateShareableLink(noteItem._id);
+                      navigator.clipboard.writeText(shareableLink);
                     }}
                   >
                     Share
@@ -118,16 +117,18 @@ const MyNotes = ({ search }) => {
                 </div>
               </Card>
               <Accordion.Content>
-                <Badge color="success" className="text-xl max-w-44">
-                  Category - {noteItem.category}
-                </Badge>
-
-                <Blockquote className="blockquote mb-2 ml-10 mr-10">
+                <div className="flex justify-start">
+                  {" "}
+                  {/* Added flex and justify-start classes */}
+                  <Badge color="success" className="text-xl max-w-44">
+                    Category - {noteItem.category}
+                  </Badge>
+                </div>
+                <Blockquote className="mb-2 ml-10 mr-10">
                   <MarkdownPreview source={noteItem.content} />
-
                   <footer className="blockquote-footer">
-                    Created On -
-                    <cite>{noteItem.createdAt.substring(0, 10)}</cite>
+                    Created On
+                    <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
                   </footer>
                 </Blockquote>
               </Accordion.Content>

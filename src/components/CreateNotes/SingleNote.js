@@ -7,8 +7,7 @@ import LoadingSpinner from "../utils/LodingSpinner";
 import { Button, Label, TextInput, Card } from "flowbite-react";
 import { useNavigate, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 
 const SingleNote = () => {
   const { id } = useParams();
