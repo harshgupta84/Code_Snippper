@@ -12,6 +12,7 @@ const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const noteList = useSelector((state) => state.noteList);
+  console.log(noteList);
   const { loading, error, notes } = noteList;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -59,7 +60,7 @@ const MyNotes = ({ search }) => {
   }
   return (
     <div className="mt-10 mb-4 min-h-screen">
-      {error && <ErrorMessage error={error+"mynote"} />}
+      {error && <ErrorMessage error={error} />}
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">
