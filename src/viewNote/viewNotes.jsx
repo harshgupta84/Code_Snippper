@@ -9,7 +9,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 const ViewNotes = () => {
   // Corrected component name to start with an uppercase letter
   const { id } = useParams();
-  console.log(id);
+
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
