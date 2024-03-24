@@ -6,13 +6,12 @@ import LoadingSpinner from "../utils/LodingSpinner"; // Corrected import
 import ErrorMessage from "../utils/ErrorMessage";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
-import { Toast } from "flowbite-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const noteList = useSelector((state) => state.noteList);
-  console.log(noteList);
   const { loading, error, notes } = noteList;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -52,6 +51,7 @@ const MyNotes = ({ search }) => {
   };
 
   const generateShareableLink = (id) => {
+    toast.success("Copied Successfully");
     return `${window.location.origin}/note/view/${id}`;
   };
 
@@ -61,6 +61,7 @@ const MyNotes = ({ search }) => {
   return (
     <div className="mt-10 mb-4 min-h-screen">
       {error && <ErrorMessage error={error} />}
+      <Toaster />
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">
