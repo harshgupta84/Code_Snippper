@@ -4,14 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteNoteAction, listNotes } from "../../actions/notesAction";
 import LoadingSpinner from "../utils/LodingSpinner"; // Corrected import
 import ErrorMessage from "../utils/ErrorMessage";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "flowbite-react";
 
 const MyNotes = ({ search }) => {
-  console.log(search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const noteList = useSelector((state) => state.noteList);
@@ -57,21 +54,12 @@ const MyNotes = ({ search }) => {
     return `${window.location.origin}/note/view/${id}`;
   };
 
-  const renderCodeBlock = (code, language) => {
-    return (
-      <div key={Math.random()} style={{ textAlign: "left" }}>
-        <SyntaxHighlighter language={language} style={vscDarkPlus}>
-          {code}
-        </SyntaxHighlighter>
-      </div>
-    );
-  };
   if (loading) {
     return <LoadingSpinner />;
   }
   return (
     <div className="mt-10 mb-4 min-h-screen">
-      {error && <ErrorMessage error={error} />}
+      {error && <ErrorMessage error={error+"mynote"} />}
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">
