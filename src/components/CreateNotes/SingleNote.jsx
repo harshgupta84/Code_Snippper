@@ -7,6 +7,7 @@ import LoadingSpinner from "../utils/LodingSpinner";
 import { Button, Label, TextInput, Card } from "flowbite-react";
 import { useNavigate, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import { Toaster } from "react-hot-toast";
 
 
 const SingleNote = () => {
@@ -69,6 +70,7 @@ const SingleNote = () => {
       <form className="max-w-lg mx-auto" onSubmit={updateHandler}>
         {error && <ErrorMessage error={error} />}
         {errorDelete && <ErrorMessage error={errorDelete} />}
+        <Toaster/>
         <div className="mb-4">
           <Label htmlFor="title" value="Title" />
           <TextInput

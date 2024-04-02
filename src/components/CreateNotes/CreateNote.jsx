@@ -6,6 +6,7 @@ import ErrorMessage from "../utils/ErrorMessage";
 import { Card, Button, Label, TextInput } from "flowbite-react";
 import ReactMarkdown from "react-markdown";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import toast, { Toaster } from "react-hot-toast";
 
 const CreateNote = () => {
   const navigate = useNavigate();
@@ -28,13 +29,14 @@ const CreateNote = () => {
     e.preventDefault();
     dispatch(createNoteAction(title, content, category));
     if (!title || !content || !category) return;
-
+    toast.success("Note Created Successfully 😁");
     resetHandler();
     navigate("/mynotes");
   };
 
   return (
     <div className="mt-10 mx-auto max-w-xl">
+      <Toaster />
       <h1 class="flex items-center text-5xl font-extrabold dark:text-white">
         Create Your
         <span class="bg-blue-100 text-blue-800 text-5xl font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-2">
