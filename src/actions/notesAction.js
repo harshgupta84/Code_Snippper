@@ -30,7 +30,7 @@ export const listNotes = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`https://code-store-t3fy.onrender.com/api/notes`, config);
+    const { data } = await axios.get(`/api/notes`, config);
 
     dispatch({
       type: NOTES_LIST_SUCCESS,
