@@ -7,6 +7,7 @@ import ErrorMessage from "../utils/ErrorMessage";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import jsPDF from "jspdf";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
@@ -55,9 +56,16 @@ const MyNotes = ({ search }) => {
     return `${window.location.origin}/note/view/${id}`;
   };
 
+  const downloadPDF = (content) => {
+    const doc = new jsPDF();
+    doc.text(content, 10, 10);
+    doc.save("note.pdf");
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
+
   return (
     <div className="mt-10 mb-4 min-h-screen">
       {error && <ErrorMessage error={error} />}
@@ -82,30 +90,40 @@ const MyNotes = ({ search }) => {
           )
           .map((noteItem, index) => (
             <Accordion.Panel key={index} eventKey={index.toString()}>
-              <Card>
-                <div className="flex ">
-                  <Accordion.Title>{noteItem.title}</Accordion.Title>
+              <div>
+                <Card>
+                  <div className="flex">
+                    <Accordion.Title>{noteItem.title}</Accordion.Title>
 
-                  <Link to={`/note/${noteItem._id}`}>
-                    <Button>Edit</Button>
-                  </Link>
-                  <Button
-                    color="warning"
-                    className="mx-2"
-                    onClick={() => deleteHandler(noteItem._id)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      const shareableLink = generateShareableLink(noteItem._id);
-                      navigator.clipboard.writeText(shareableLink);
-                    }}
-                  >
-                    Share
-                  </Button>
-                </div>
-              </Card>
+                    <Link to={`/note/${noteItem._id}`}>
+                      <Button>Edit</Button>
+                    </Link>
+                    <Button
+                      color="warning"
+                      className="mx-2"
+                      onClick={() => deleteHandler(noteItem._id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const shareableLink = generateShareableLink(
+                          noteItem._id
+                        );
+                        navigator.clipboard.writeText(shareableLink);
+                      }}
+                    >
+                      Share
+                    </Button>
+                    <Button
+                      onClick={() => downloadPDF(noteItem.content)}
+                      className="mx-2"
+                    >
+                      Download PDF
+                    </Button>
+                  </div>
+                </Card>
+              </div>
               <Accordion.Content>
                 <div className="flex justify-start">
                   {" "}
@@ -114,6 +132,7 @@ const MyNotes = ({ search }) => {
                     Category - {noteItem.category}
                   </Badge>
                 </div>
+
                 <Blockquote className="mb-2 ml-10 mr-10">
                   <MarkdownPreview source={noteItem.content} />
                   <footer className="blockquote-footer">
