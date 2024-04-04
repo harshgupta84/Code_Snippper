@@ -8,6 +8,14 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import jsPDF from "jspdf";
+import {
+  EmailIcon,
+  EmailShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
@@ -139,6 +147,25 @@ const MyNotes = ({ search }) => {
                     Created On
                     <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
                   </footer>
+                  <div className="flex">
+                    <div className="mr-10">
+                      <EmailShareButton
+                        subject={noteItem.title}
+                        body={noteItem.content}
+                      >
+                        <EmailIcon size={32} round={true}></EmailIcon>
+                      </EmailShareButton>
+                    </div>
+                    <div className="ml-20">
+                      <WhatsappShareButton
+                        title={noteItem.title + noteItem.content}
+                        separator=":: "
+                        url={window.location.href}
+                      >
+                        <WhatsappIcon size={32} round={true} />
+                      </WhatsappShareButton>
+                    </div>
+                  </div>
                 </Blockquote>
               </Accordion.Content>
             </Accordion.Panel>
