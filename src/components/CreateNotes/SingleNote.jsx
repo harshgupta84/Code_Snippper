@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { Toaster } from "react-hot-toast";
 
-
 const SingleNote = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ const SingleNote = () => {
       <form className="max-w-lg mx-auto" onSubmit={updateHandler}>
         {error && <ErrorMessage error={error} />}
         {errorDelete && <ErrorMessage error={errorDelete} />}
-        <Toaster/>
+        <Toaster />
         <div className="mb-4">
           <Label htmlFor="title" value="Title" />
           <TextInput
@@ -111,7 +110,7 @@ const SingleNote = () => {
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Note Preview
               </h5>
-              <MarkdownPreview source={content} />
+              <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={content} />
               <p className="text-xs text-gray-500 hover:underline">
                 Creating on - {new Date().toLocaleDateString()}
               </p>
