@@ -4,18 +4,58 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNoteAction } from "../../actions/notesAction";
 import ErrorMessage from "../utils/ErrorMessage";
 import { Card, Button, Label, TextInput } from "flowbite-react";
-import ReactMarkdown from "react-markdown";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 
 const CreateNote = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+  const genAI = new GoogleGenerativeAI(
+    "AIzaSyBDpQ3QD6-mdf009l0LIUSv723Ywgl9D0w"
+  );
 
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash-latest",
+  });
+
+  const generationConfig = {
+    temperature: 1,
+    topP: 0.95,
+    topK: 64,
+    maxOutputTokens: 8192,
+    responseMimeType: "text/plain",
+  };
+
+  const safetySettings = [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+  ];
+
+  const [response, setResponse] = useState("");
+  const [response2, setResponse2] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const noteCreate = useSelector((state) => state.noteCreate);
   const { loading, error } = noteCreate;
 
@@ -27,19 +67,56 @@ const CreateNote = () => {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(createNoteAction(title, content, category));
     if (!title || !content || !category) return;
+    dispatch(createNoteAction(title, content, category));
     toast.success("Note Created Successfully 😁");
     resetHandler();
     navigate("/mynotes");
   };
 
+  const handleSendMessage = async () => {
+    try {
+      const chatSession = model.startChat({
+        generationConfig,
+        safetySettings,
+        history: [],
+      });
+
+      const result = await chatSession.sendMessage(
+        `Summarize the following content: ${content}`
+      );
+      setResponse(result.response.text());
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  const handleGenerateContent = async () => {
+    try {
+      const chatSession = model.startChat({
+        generationConfig,
+        safetySettings,
+        history: [],
+      });
+
+      const result = await chatSession.sendMessage(
+        `Generate content and summary for the title: ${title}`
+      );
+      setResponse2(result.response.text());
+      setContent(
+        (prevContent) => `${prevContent}\n\n${result.response.text()}`
+      );
+    } catch (error) {
+      console.error("Error generating content:", error);
+    }
+  };
+
   return (
-    <div className="mt-10 mx-auto max-w-xl">
+    <div className="mt-10 mx-auto max-w-6xl">
       <Toaster />
-      <h1 class="flex items-center text-5xl font-extrabold dark:text-white">
+      <h1 className="flex items-center text-5xl font-extrabold dark:text-white">
         Create Your
-        <span class="bg-blue-100 text-blue-800 text-5xl font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-2">
+        <span className="bg-blue-100 text-blue-800 text-5xl font-semibold ms-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
           Note
         </span>
       </h1>
@@ -71,6 +148,9 @@ const CreateNote = () => {
           />
         </div>
         <div>
+          <Button onClick={handleGenerateContent}>
+            Generate Content By Title
+          </Button>
           <Label htmlFor="content" className="text-xl" value="Your Content" />
           <textarea
             id="content"
@@ -81,35 +161,28 @@ const CreateNote = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
+          <Button onClick={handleSendMessage}>Summarize</Button>
+          {response && (
+            <div className="text-white">
+              <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={response} />
+            </div>
+          )}
         </div>
         <div>
           {content && (
-            <Card>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Note Preview
-              </h2>
-              <div className="text-lg text-gray-700 dark:text-gray-300">
-                <MarkdownPreview source={content} />
+            <div className=" flex flex-col ">
+              <div className="flex">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Note Preview
+                </h2>
+              </div>
+              <div className=" text-gray-700 dark:text-gray-300 ">
+                <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} className=" flex flex-col"source={content} />
               </div>
               <p className="inline-flex items-center text-base font-normal text-gray-500 hover:underline dark:text-gray-400">
-                <svg
-                  className="w-4 h-4 me-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
                 Creating on - {new Date().toLocaleDateString()}
               </p>
-            </Card>
+            </div>
           )}
         </div>
         <div className="flex flex-wrap gap-4">

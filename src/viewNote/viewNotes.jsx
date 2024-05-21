@@ -44,7 +44,7 @@ const ViewNotes = () => {
               <h2 className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 {category}
               </h2>
-              <MarkdownPreview source={content} />
+              <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={content} />
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Created on - {new Date().toLocaleDateString()}

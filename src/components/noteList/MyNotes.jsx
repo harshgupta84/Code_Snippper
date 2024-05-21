@@ -16,6 +16,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
+import { left } from "@cloudinary/url-gen/qualifiers/textAlignment";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const MyNotes = ({ search }) => {
   };
 
   const generateShareableLink = (id) => {
-    toast.success("Copied Successfully");
+    toast.success("Link Created Successfully");
     return `${window.location.origin}/note/view/${id}`;
   };
 
@@ -90,7 +91,7 @@ const MyNotes = ({ search }) => {
           Create New Note
         </Button>
       </Link>
-      <Accordion className="mx-5 p-5" collapseAll>
+      <Accordion className="mx-5" collapseAll>
         {notes
           ?.reverse()
           .filter((filterNote) =>
@@ -99,50 +100,57 @@ const MyNotes = ({ search }) => {
           .map((noteItem, index) => (
             <Accordion.Panel key={index} eventKey={index.toString()}>
               <div>
-                <Card>
-                  <div className="flex">
-                    <Accordion.Title>{noteItem.title}</Accordion.Title>
+                <Card className=" max-h-20 m-2">
+                  <div className="flex gap-3">
+                    <Accordion.Title className=" -mt-5  text-xl max-w-5xl">
+                      {noteItem.title}
+                    </Accordion.Title>
 
-                    <Link to={`/note/${noteItem._id}`}>
-                      <Button>Edit</Button>
-                    </Link>
-                    <Button
-                      color="warning"
-                      className="mx-2"
-                      onClick={() => deleteHandler(noteItem._id)}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        const shareableLink = generateShareableLink(
-                          noteItem._id
-                        );
-                        navigator.clipboard.writeText(shareableLink);
-                      }}
-                    >
-                      Share
-                    </Button>
-                    <Button
-                      onClick={() => downloadPDF(noteItem.content)}
-                      className="mx-2"
-                    >
-                      Download PDF
-                    </Button>
+                    <div>
+                      <Link to={`/note/${noteItem._id}`}>
+                        <Button>Edit</Button>
+                      </Link>
+                    </div>
+                    <div>
+                      <Button
+                        color="warning"
+                        onClick={() => deleteHandler(noteItem._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        onClick={() => {
+                          const shareableLink = generateShareableLink(
+                            noteItem._id
+                          );
+                          navigator.clipboard.writeText(shareableLink);
+                        }}
+                      >
+                        Share
+                      </Button>
+                    </div>
+                    <div>
+                      <Button onClick={() => downloadPDF(noteItem.content)}>
+                        Download PDF
+                      </Button>
+                    </div>
                   </div>
                 </Card>
               </div>
               <Accordion.Content>
                 <div className="flex justify-start">
-                  {" "}
-                  {/* Added flex and justify-start classes */}
                   <Badge color="success" className="text-xl max-w-44">
                     Category - {noteItem.category}
                   </Badge>
                 </div>
 
                 <Blockquote className="mb-2 ml-10 mr-10">
-                  <MarkdownPreview source={noteItem.content} />
+                  <MarkdownPreview
+                    style={{ padding: 40 ,textAlign:"left"}}
+                    source={noteItem.content}
+                  />
                   <footer className="blockquote-footer">
                     Created On
                     <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
