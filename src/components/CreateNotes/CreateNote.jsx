@@ -14,9 +14,7 @@ import {
 
 const CreateNote = () => {
   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(
-    "AIzaSyBDpQ3QD6-mdf009l0LIUSv723Ywgl9D0w"
-  );
+  const genAI = new GoogleGenerativeAI(apiKey);
 
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash-latest",
@@ -164,7 +162,10 @@ const CreateNote = () => {
           <Button onClick={handleSendMessage}>Summarize</Button>
           {response && (
             <div className="text-white">
-              <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={response} />
+              <MarkdownPreview
+                style={{ padding: 40, textAlign: "left" }}
+                source={response}
+              />
             </div>
           )}
         </div>
@@ -177,7 +178,11 @@ const CreateNote = () => {
                 </h2>
               </div>
               <div className=" text-gray-700 dark:text-gray-300 ">
-                <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} className=" flex flex-col"source={content} />
+                <MarkdownPreview
+                  style={{ padding: 40, textAlign: "left" }}
+                  className=" flex flex-col"
+                  source={content}
+                />
               </div>
               <p className="inline-flex items-center text-base font-normal text-gray-500 hover:underline dark:text-gray-400">
                 Creating on - {new Date().toLocaleDateString()}
