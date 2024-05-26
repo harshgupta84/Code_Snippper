@@ -14,7 +14,7 @@ import {
 
 const CreateNote = () => {
   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI(apiKey);
+  const genAI = new GoogleGenerativeAI("AIzaSyBDpQ3QD6-mdf009l0LIUSv723Ywgl9D0w");
 
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash-latest",
@@ -48,7 +48,6 @@ const CreateNote = () => {
   ];
 
   const [response, setResponse] = useState("");
-  const [response2, setResponse2] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
@@ -83,9 +82,12 @@ const CreateNote = () => {
       const result = await chatSession.sendMessage(
         `Summarize the following content: ${content}`
       );
-      setResponse(result.response.text());
+      const resultText = await result.response.text();
+      setResponse(resultText);
+      setContent((prevContent) => `${prevContent}\n\n**Summary:**\n${resultText}`);
     } catch (error) {
       console.error("Error sending message:", error);
+      toast.error("Failed to summarize content.");
     }
   };
 
@@ -100,12 +102,11 @@ const CreateNote = () => {
       const result = await chatSession.sendMessage(
         `Generate content and summary for the title: ${title}`
       );
-      setResponse2(result.response.text());
-      setContent(
-        (prevContent) => `${prevContent}\n\n${result.response.text()}`
-      );
+      const resultText = await result.response.text();
+      setContent((prevContent) => `${prevContent}\n\n${resultText}`);
     } catch (error) {
       console.error("Error generating content:", error);
+      toast.error("Failed to generate content.");
     }
   };
 
@@ -146,7 +147,7 @@ const CreateNote = () => {
           />
         </div>
         <div>
-          <Button onClick={handleGenerateContent}>
+          <Button onClick={handleGenerateContent} type="button">
             Generate Content By Title
           </Button>
           <Label htmlFor="content" className="text-xl" value="Your Content" />
@@ -159,15 +160,7 @@ const CreateNote = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-          <Button onClick={handleSendMessage}>Summarize</Button>
-          {response && (
-            <div className="text-white">
-              <MarkdownPreview
-                style={{ padding: 40, textAlign: "left" }}
-                source={response}
-              />
-            </div>
-          )}
+          <Button onClick={handleSendMessage} type="button">Summarize</Button>
         </div>
         <div>
           {content && (

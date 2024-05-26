@@ -23,11 +23,12 @@ const Features = () => {
         <Timeline.Item>
           <Timeline.Point icon={HiCalendar} />
           <Timeline.Content>
-            <Timeline.Title>Search Functionality</Timeline.Title>
+            <Timeline.Title>Generation and Summarization</Timeline.Title>
             <Timeline.Body>
-              Effortlessly search through your stored code snippets, making it
-              simple to find what you need when you need it.
+              Effortlessly generate and summarize code snippets, making it
+              simple to find and understand what you need when you need it.
             </Timeline.Body>
+
             <Button color="gray" href="/about">
               Learn More
               <HiArrowNarrowRight className="ml-2 h-3 w-3" />
