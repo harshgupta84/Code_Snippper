@@ -16,7 +16,7 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-import { left } from "@cloudinary/url-gen/qualifiers/textAlignment";
+
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
