@@ -18,7 +18,7 @@ const LandingPage = () => {
           AI
         </h1>
         <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-          Here at Flowbite we focus on markets where technology, innovation, and
+          Here  we focus on  technology, innovation, and
           capital can unlock long-term value and drive economic growth.
         </p>
       </div>
