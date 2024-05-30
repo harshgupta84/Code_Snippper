@@ -65,8 +65,8 @@ const SingleNote = () => {
   }
 
   return (
-    <div className="container mx-auto mt-10 mb-10">
-      <form className="max-w-lg mx-auto" onSubmit={updateHandler}>
+    <div className="mt-10 mb-10">
+      <form className="max-w-screen mx-80" onSubmit={updateHandler}>
         {error && <ErrorMessage error={error} />}
         {errorDelete && <ErrorMessage error={errorDelete} />}
         <Toaster />
@@ -112,7 +112,7 @@ const SingleNote = () => {
               </h5>
               <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={content} />
               <p className="text-xs text-gray-500 hover:underline">
-                Creating on - {new Date().toLocaleDateString()}
+                Updating on - {new Date().toLocaleDateString()}
               </p>
             </Card>
           )}
