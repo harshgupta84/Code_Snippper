@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Accordion, Button, Card, Badge, Blockquote } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteNoteAction, listNotes } from "../../actions/notesAction";
-import LoadingSpinner from "../utils/LodingSpinner"; // Corrected import
+import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,12 +11,10 @@ import jsPDF from "jspdf";
 import {
   EmailIcon,
   EmailShareButton,
-  TwitterIcon,
-  TwitterShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-
+import { FaEdit, FaTrash, FaShareAlt, FaDownload } from "react-icons/fa";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
@@ -76,21 +74,23 @@ const MyNotes = ({ search }) => {
   }
 
   return (
-    <div className="mt-10 mb-4 min-h-screen">
+    <div className="mt-10 mb-4 min-h-screen px-4">
       {error && <ErrorMessage error={error} />}
       <Toaster />
-      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+      <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white text-center">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">
           {userInfo && userInfo.name}
         </span>{" "}
         to CodeSnipper
       </h1>
-      <Link to="/createnote">
-        <Button size="xl" className="m-10">
-          Create New Note
-        </Button>
-      </Link>
+      <div className="flex justify-center mb-6">
+        <Link to="/createnote">
+          <Button size="lg" className="m-2">
+            Create New Note
+          </Button>
+        </Link>
+      </div>
       <Accordion className="mx-5" collapseAll>
         {notes
           ?.reverse()
@@ -100,27 +100,27 @@ const MyNotes = ({ search }) => {
           .map((noteItem, index) => (
             <Accordion.Panel key={index} eventKey={index.toString()}>
               <div>
-                <Card className=" max-h-20 m-2">
-                  <div className="flex gap-3">
-                    <Accordion.Title className=" -mt-5  text-xl max-w-5xl">
+                <Card className="m-1">
+                  <div className="flex flex-col md:flex-row gap-3 items-center">
+                    <Accordion.Title className="text-lg">
                       {noteItem.title}
                     </Accordion.Title>
-
-                    <div>
+                    <div className="flex gap-2">
                       <Link to={`/note/${noteItem._id}`}>
-                        <Button>Edit</Button>
+                        <Button size="sm" color="info">
+                          <FaEdit />
+                        </Button>
                       </Link>
-                    </div>
-                    <div>
                       <Button
+                        size="sm"
                         color="warning"
                         onClick={() => deleteHandler(noteItem._id)}
                       >
-                        Delete
+                        <FaTrash />
                       </Button>
-                    </div>
-                    <div>
                       <Button
+                        size="sm"
+                        color="info"
                         onClick={() => {
                           const shareableLink = generateShareableLink(
                             noteItem._id
@@ -128,51 +128,48 @@ const MyNotes = ({ search }) => {
                           navigator.clipboard.writeText(shareableLink);
                         }}
                       >
-                        Share
+                        <FaShareAlt />
                       </Button>
-                    </div>
-                    <div>
-                      <Button onClick={() => downloadPDF(noteItem.content)}>
-                        Download PDF
+                      <Button
+                        size="sm"
+                        color="success"
+                        onClick={() => downloadPDF(noteItem.content)}
+                      >
+                        <FaDownload />
                       </Button>
                     </div>
                   </div>
                 </Card>
               </div>
               <Accordion.Content>
-                <div className="flex justify-start">
-                  <Badge color="success" className="text-xl max-w-44">
+                <div className="flex justify-start mt-2 mb-4">
+                  <Badge color="success" className="text-lg">
                     Category - {noteItem.category}
                   </Badge>
                 </div>
-
-                <Blockquote className="mb-2 ml-10 mr-10">
+                <Blockquote className="mb-2">
                   <MarkdownPreview
-                    style={{ padding: 40 ,textAlign:"left"}}
+                    style={{ padding: 40, textAlign: "left" }}
                     source={noteItem.content}
                   />
                   <footer className="blockquote-footer">
                     Created On
                     <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
                   </footer>
-                  <div className="flex">
-                    <div className="mr-10">
-                      <EmailShareButton
-                        subject={noteItem.title}
-                        body={noteItem.content}
-                      >
-                        <EmailIcon size={32} round={true}></EmailIcon>
-                      </EmailShareButton>
-                    </div>
-                    <div className="ml-20">
-                      <WhatsappShareButton
-                        title={noteItem.title + noteItem.content}
-                        separator=":: "
-                        url={window.location.href}
-                      >
-                        <WhatsappIcon size={32} round={true} />
-                      </WhatsappShareButton>
-                    </div>
+                  <div className="flex gap-4 mt-4">
+                    <EmailShareButton
+                      subject={noteItem.title}
+                      body={noteItem.content}
+                    >
+                      <EmailIcon size={32} round={true}></EmailIcon>
+                    </EmailShareButton>
+                    <WhatsappShareButton
+                      title={noteItem.title + noteItem.content}
+                      separator=":: "
+                      url={window.location.href}
+                    >
+                      <WhatsappIcon size={32} round={true} />
+                    </WhatsappShareButton>
                   </div>
                 </Blockquote>
               </Accordion.Content>

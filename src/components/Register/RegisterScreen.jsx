@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../actions/userActions";
 import ErrorMessage from "../utils/ErrorMessage";
 import LoadingSpinner from "../utils/LodingSpinner";
+
 const RegisterScreen = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -33,12 +34,13 @@ const RegisterScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
-      setMessage("Passwords Do not match");
+      setMessage("Passwords do not match");
     } else {
       dispatch(register(name, email, password, pic));
       setMessage(null);
     }
   };
+
   const cloudinary = new Cloudinary({ cloud: { cloudName: "dimugtqll" } });
 
   const postDetails = async (pics) => {
@@ -58,24 +60,23 @@ const RegisterScreen = () => {
         console.error("Error uploading image:", error);
       }
     } else {
-      setMessage("Please Select a Valid Image (JPEG or PNG).");
+      setMessage("Please select a valid image (JPEG or PNG).");
     }
   };
+
   if (loading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <div className="mt-20 mb-56  flex justify-evenly ">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 mb-4">
       {error && <ErrorMessage error={error}></ErrorMessage>}
       {message && <ErrorMessage error={message}></ErrorMessage>}
 
-      <div className="h-80 w-80">
-        <form className="flex max-w-md flex-col gap-4" onSubmit={submitHandler}>
+      <div className="w-full max-w-lg p-8 shadow-md rounded-lg">
+        <form className="flex flex-col gap-4" onSubmit={submitHandler}>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="name" value="Your Name" />
-            </div>
+            <Label htmlFor="name" value="Your Name" />
             <TextInput
               id="name"
               type="name"
@@ -86,9 +87,7 @@ const RegisterScreen = () => {
             />
           </div>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="email2" value="Your email" />
-            </div>
+            <Label htmlFor="email2" value="Your email" />
             <TextInput
               id="email2"
               type="email"
@@ -99,9 +98,7 @@ const RegisterScreen = () => {
             />
           </div>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="password2" value="Your password" />
-            </div>
+            <Label htmlFor="password2" value="Your password" />
             <TextInput
               id="password2"
               type="password"
@@ -111,9 +108,7 @@ const RegisterScreen = () => {
             />
           </div>
           <div>
-            <div className="mb-2 block">
-              <Label htmlFor="repeat-password" value="Repeat password" />
-            </div>
+            <Label htmlFor="repeat-password" value="Repeat password" />
             <TextInput
               id="repeat-password"
               type="password"
@@ -124,12 +119,10 @@ const RegisterScreen = () => {
           </div>
           {picMessage && <ErrorMessage error={picMessage}></ErrorMessage>}
           <div>
-            <div>
-              <Label
-                htmlFor="file-upload-helper-text"
-                value="Upload Your Profile Photo"
-              />
-            </div>
+            <Label
+              htmlFor="file-upload-helper-text"
+              value="Upload Your Profile Photo"
+            />
             <FileInput
               id="file-upload-helper-text"
               onChange={(e) => postDetails(e.target.files[0])}
@@ -141,18 +134,17 @@ const RegisterScreen = () => {
             <Label htmlFor="agree" className="flex">
               I agree with the&nbsp;
               <Link
-                href="#"
+                to="#"
                 className="text-cyan-600 hover:underline dark:text-cyan-500"
               >
                 terms and conditions
               </Link>
             </Label>
           </div>
-
           <Button type="submit">Register new account</Button>
         </form>
       </div>
-      <div className="ml-20 h-56 w-56 text-white">
+      <div className="mt-10 w-48 h-48">
         {pic && (
           <CloudinaryContext cloudName="dimugtqll">
             <Image publicId={pic} width="200">

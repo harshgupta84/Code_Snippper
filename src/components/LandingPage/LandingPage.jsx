@@ -9,8 +9,8 @@ const LandingPage = () => {
   const { userInfo } = userLogin;
 
   return (
-    <div className=" ">
-      <div className="mt-20">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="mt-20 text-center">
         <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
           <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
             Code Snipper
@@ -18,11 +18,11 @@ const LandingPage = () => {
           AI
         </h1>
         <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-          Here  we focus on  technology, innovation, and
-          capital can unlock long-term value and drive economic growth.
+          Here we focus on technology, innovation, and capital to unlock
+          long-term value and drive economic growth.
         </p>
       </div>
-      <div className="mt-10 flex flex-wrap gap-16 justify-center">
+      <div className="mt-10 flex flex-wrap gap-8 justify-center">
         {userInfo ? (
           <Link to="/mynotes">
             <Button size="xl" gradientDuoTone="greenToBlue">
@@ -44,7 +44,7 @@ const LandingPage = () => {
           </>
         )}
       </div>
-      <div className="mt-44 ml-20 mr-20 mb-10">
+      <div className="mt-20 w-full px-4 sm:px-8 lg:px-16">
         <Features />
       </div>
     </div>

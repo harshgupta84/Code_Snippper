@@ -31,9 +31,10 @@ const LoginScreen = () => {
   }
 
   return (
-    <div className=" mt-28 mb-20 ml-80">
+    // Use flex for centering and adjust margins and max-width responsively
+    <div className="flex items-center justify-center min-h-screen px-4">
       {error && <ErrorMessage error={error}></ErrorMessage>}
-      <form className="flex max-w-md flex-col gap-4" onSubmit={submitHandler}>
+      <form className="w-full max-w-md flex flex-col gap-4" onSubmit={submitHandler}>
         <div>
           <div className="mb-2 block">
             <Label htmlFor="email1" value="Your email" />
