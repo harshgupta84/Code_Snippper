@@ -14,7 +14,7 @@ import {
 
 const CreateNote = () => {
   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-  const genAI = new GoogleGenerativeAI("AIzaSyBDpQ3QD6-mdf009l0LIUSv723Ywgl9D0w");
+  const genAI = new GoogleGenerativeAI("AIzaSyDPL8lBcOFIdAeAr_xG4UkKRJdQUV0Eaaw");
 
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash-latest",
@@ -100,7 +100,7 @@ const CreateNote = () => {
       });
 
       const result = await chatSession.sendMessage(
-        `Generate content and summary for the title: ${title}`
+        `Generate content for the title: ${title}`
       );
       const resultText = await result.response.text();
       setContent((prevContent) => `${prevContent}\n\n${resultText}`);
