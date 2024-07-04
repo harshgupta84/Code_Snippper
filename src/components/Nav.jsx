@@ -35,7 +35,7 @@ const Nav = ({ setSearch }) => {
       <Navbar fluid rounded>
         <NavbarBrand href="/">
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Code Snipper
+            Code Snipper AI
           </span>
           <Flowbite>
             <DarkThemeToggle className="ml-16" />
