@@ -147,15 +147,38 @@ const MyNotes = ({ search }) => {
                     Category - {noteItem.category}
                   </Badge>
                 </div>
+
                 <Blockquote className="mb-2">
-                  <MarkdownPreview
-                    style={{ padding: 40, textAlign: "left" }}
-                    source={noteItem.content}
-                  />
-                  <footer className="blockquote-footer">
+                  <div className="relative rounded-t-xl p-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
+                    <div className="h-12 flex items-center px-4 bg-slate-800 rounded-t-lg">
+                      <div className="flex space-x-2">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      </div>
+                      <div className="ml-4 flex items-center">
+                        <div className="bg-slate-700 rounded-t-lg px-4 py-1 text-white">
+                          {noteItem.title}
+                        </div>
+                      </div>
+                      <button className="ml-1 w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center">
+                        +
+                      </button>
+                    </div>
+
+                    <MarkdownPreview
+                      style={{
+                        borderRadius: 4,
+                        padding: 40,
+                        textAlign: "left",
+                      }}
+                      source={noteItem.content}
+                    />
+                  </div>
+                  <div className="ml-5 mt-4">
                     Created On
                     <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
-                  </footer>
+                  </div>
                   <div className="flex gap-4 mt-4">
                     <EmailShareButton
                       subject={noteItem.title}
