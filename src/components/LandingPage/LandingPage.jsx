@@ -47,6 +47,20 @@ const LandingPage = () => {
       <div className="mt-20 w-full px-4 sm:px-8 lg:px-16">
         <Features />
       </div>
+      <section className=" text-white py-12 px-6 rounded-lg shadow-md">
+        <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+          Get in Touch
+        </h2>
+        <p className="text-center text-lg mb-6">
+          Have a question or want to work together?
+        </p>
+        <a
+          href="mailto:21ucs084@lnmiit.ac.in"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full inline-block mx-auto"
+        >
+          Contact Us
+        </a>
+      </section>
     </div>
   );
 };
