@@ -1,40 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-
-import { Button, Label, TextInput, Card, Badge } from "flowbite-react";
-import { useNavigate, useParams } from "react-router-dom";
+import QRCode from "qrcode";
+import { Card, Badge, Button } from "flowbite-react";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
 const ViewNotes = () => {
-  // Corrected component name to start with an uppercase letter
   const { id } = useParams();
-
   const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
+  const [qrCode, setQrCode] = useState("");
 
-  // You can continue your component implementation here
+  // Fetching the note data
   useEffect(() => {
-    const fetching = async () => {
-      const { data } = await axios.get(`/api/notes/${id}`);
-
-      setTitle(data.title);
-      setContent(data.content);
-      setCategory(data.category);
-      setDate(data.updatedAt);
+    const fetchNote = async () => {
+      try {
+        const { data } = await axios.get(`/api/notes/${id}`);
+        setTitle(data.title);
+        setContent(data.content);
+        setCategory(data.category);
+        setDate(data.updatedAt);
+      } catch (err) {
+        console.error("Error fetching note:", err);
+      }
     };
 
-    fetching();
+    fetchNote();
   }, [id]);
+
+  // QR Code generation
+  const handleGenerateQR = async () => {
+    const noteUrl = `${window.location.origin}/notes/${id}`;
+    try {
+      const qrCodeUrl = await QRCode.toDataURL(noteUrl);
+      setQrCode(qrCodeUrl);
+    } catch (err) {
+      console.error("Error generating QR code:", err);
+    }
+  };
+
   return (
     <div>
       <div className="mb-4">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white m-10">
           Shared Note Preview
         </h1>
+        <div className="m-10 flex justify-start">
+          <Button color="info" onClick={handleGenerateQR}>
+            Generate QR Code
+          </Button>
+        </div>
+        {qrCode && (
+          <div className="flex justify-center mb-6">
+            <img src={qrCode} alt="QR Code" className="w-40 h-40" />
+          </div>
+        )}
         {content && (
           <Card className="border border-xl border-white rounded-lg ml-10 mr-10">
             <div className="mb-4">
@@ -70,7 +94,7 @@ const ViewNotes = () => {
               </div>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Created on - {new Date().toLocaleDateString()}
+              Created on - {new Date(date).toLocaleDateString()}
             </p>
           </Card>
         )}
