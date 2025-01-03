@@ -8,13 +8,14 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import jsPDF from "jspdf";
+import QRCode from "qrcode";
 import {
   EmailIcon,
   EmailShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-import { FaEdit, FaTrash, FaShareAlt, FaDownload } from "react-icons/fa";
+import { FaEdit, FaTrash, FaShareAlt, FaDownload, FaQrcode } from "react-icons/fa";
 
 const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
@@ -59,8 +60,22 @@ const MyNotes = ({ search }) => {
   };
 
   const generateShareableLink = (id) => {
-    toast.success("Link Created Successfully");
     return `${window.location.origin}/note/view/${id}`;
+  };
+
+  const generateQRCode = async (id) => {
+    const link = generateShareableLink(id);
+    try {
+      const qrCodeUrl = await QRCode.toDataURL(link);
+      toast(
+        <img src={qrCodeUrl} alt="QR Code" style={{ width: "150px" }} />,
+        {
+          duration: 15000,
+        }
+      );
+    } catch (error) {
+      toast.error("Failed to generate QR Code");
+    }
   };
 
   const downloadPDF = (content) => {
@@ -126,6 +141,7 @@ const MyNotes = ({ search }) => {
                             noteItem._id
                           );
                           navigator.clipboard.writeText(shareableLink);
+                          toast.success("Link Copied to Clipboard!");
                         }}
                       >
                         <FaShareAlt />
@@ -136,6 +152,13 @@ const MyNotes = ({ search }) => {
                         onClick={() => downloadPDF(noteItem.content)}
                       >
                         <FaDownload />
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="purple"
+                        onClick={() => generateQRCode(noteItem._id)}
+                      >
+                        <FaQrcode />
                       </Button>
                     </div>
                   </div>
@@ -149,32 +172,14 @@ const MyNotes = ({ search }) => {
                 </div>
 
                 <Blockquote className="mb-2">
-                  <div className="relative rounded-t-xl p-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
-                    <div className="h-12 flex items-center px-4 bg-slate-800 rounded-t-lg">
-                      <div className="flex space-x-2">
-                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      </div>
-                      <div className="ml-4 flex items-center">
-                        <div className="bg-slate-700 rounded-t-lg px-4 py-1 text-white">
-                          {noteItem.title}
-                        </div>
-                      </div>
-                      <button className="ml-1 w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center">
-                        +
-                      </button>
-                    </div>
-
-                    <MarkdownPreview
-                      style={{
-                        borderRadius: 4,
-                        padding: 40,
-                        textAlign: "left",
-                      }}
-                      source={noteItem.content}
-                    />
-                  </div>
+                  <MarkdownPreview
+                    style={{
+                      borderRadius: 4,
+                      padding: 40,
+                      textAlign: "left",
+                    }}
+                    source={noteItem.content}
+                  />
                   <div className="ml-5 mt-4">
                     Created On
                     <cite>{" " + noteItem.createdAt.substring(0, 10)}</cite>
