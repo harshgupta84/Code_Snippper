@@ -34,7 +34,7 @@ const ViewNotes = () => {
 
   // QR Code generation
   const handleGenerateQR = async () => {
-    const noteUrl = `${window.location.origin}/notes/${id}`;
+    const noteUrl = `${window.location.origin}`+"/notes/"+`${id}`;
     try {
       const qrCodeUrl = await QRCode.toDataURL(noteUrl);
       setQrCode(qrCodeUrl);
