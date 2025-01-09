@@ -10,15 +10,10 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loading, error, userInfo, login } = useUserStore((state) => ({
-    loading: state.loading,
-    error: state.error,
-    userInfo: state.userInfo,
-    login: state.login,
-  }));
+  const { loading, error, userInfo, login } = useUserStore();
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo!==null) {
       navigate("/mynotes");
     }
   }, [navigate, userInfo]);

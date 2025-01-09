@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { Button } from "flowbite-react";
 import Features from "./Features";
 import { Link } from "react-router-dom";
-
+import useUserStore from "../../stores/userStore";
 const LandingPage = () => {
   
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const userInfo = useUserStore((state) => state.userInfo);
   console.log(userInfo);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
