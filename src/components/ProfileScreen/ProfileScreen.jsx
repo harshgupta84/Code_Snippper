@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Button, Checkbox, Label, TextInput, FileInput } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { updateProfile } from "../../actions/userActions";
+
 import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+
 import useUserStore from "../../stores/userStore";
-import { use } from "react";
+
 import toast, { Toaster } from "react-hot-toast";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pic, setPic] = useState("");
@@ -74,7 +74,7 @@ const ProfileScreen = () => {
           {success && (
             toast.success("Profile Updated Successfully")
           )}
-          {error&& <ErrorMessage error={error} />}
+          {error && <ErrorMessage error={error} />}
           <div>
             <Label htmlFor="name" value="Name" />
             <TextInput

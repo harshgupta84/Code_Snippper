@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { createNoteAction } from "../../actions/notesAction";
 import ErrorMessage from "../utils/ErrorMessage";
 import { Card, Button, Label, TextInput } from "flowbite-react";
 import MarkdownPreview from "@uiw/react-markdown-preview";

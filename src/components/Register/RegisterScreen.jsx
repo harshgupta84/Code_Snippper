@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 import { Cloudinary } from "@cloudinary/url-gen";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../actions/userActions";
 import ErrorMessage from "../utils/ErrorMessage";
 import LoadingSpinner from "../utils/LodingSpinner";
 import useUserStore from "../../stores/userStore";
