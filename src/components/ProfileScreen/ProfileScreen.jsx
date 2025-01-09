@@ -7,6 +7,7 @@ import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import useUserStore from "../../stores/userStore";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
@@ -18,11 +19,8 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picMessage, setPicMessage] = useState("");
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
-  const userUpdate = useSelector((state) => state.userUpdate);
-  const { loading, error, success } = userUpdate;
+  const { userInfo, loading, error, success, updateProfile } = useUserStore();
 
   useEffect(() => {
     if (!userInfo) {
@@ -39,7 +37,7 @@ const ProfileScreen = () => {
       try {
         const formData = new FormData();
         formData.append("file", pics);
-        formData.append("upload_preset", "codezipper"); // Replace "your_upload_preset" with your Cloudinary upload preset name
+        formData.append("upload_preset", "codezipper");
 
         const response = await axios.post(
           "https://api.cloudinary.com/v1_1/dimugtqll/image/upload",
@@ -57,9 +55,19 @@ const ProfileScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password === confirmPassword)
-      dispatch(updateProfile({ name, email, password, pic }));
+    if (password === confirmPassword) {
+      updateProfile(name, email, password, pic);
+    }
   };
+
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        useUserStore.setState({ success: false, error: null });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, error]);
 
   if (loading) {
     return <LoadingSpinner />;

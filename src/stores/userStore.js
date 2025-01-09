@@ -6,7 +6,7 @@ const userStore = (set, get) => ({
   userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
   loading: false,
   error: null,
-
+  success: false,
   // Login Function
   login: async (email, password) => {
     try {
@@ -64,7 +64,7 @@ const userStore = (set, get) => ({
   },
 
   // Update Profile Function
-  updateProfile: async (user) => {
+  updateProfile: async (name, email, password, pic) => {
     try {
       const { userInfo } = get();
 
@@ -81,9 +81,9 @@ const userStore = (set, get) => ({
         },
       };
 
-      const { data } = await axios.put("/api/users/profile", user, config);
+      const { data } = await axios.put("/api/users/profile", { name, email, password, pic }, config);
 
-      set({ userInfo: data, loading: false });
+      set({ userInfo: data, loading: false, success: true });
       localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
       const message =
