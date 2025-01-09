@@ -5,9 +5,9 @@ import Features from "./Features";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
+  
+  const { userInfo } = useSelector((state) => state.userLogin);
+  console.log(userInfo);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4">
       <div className="mt-20 text-center">
@@ -22,7 +22,9 @@ const LandingPage = () => {
           long-term value and drive economic growth.
         </p>
       </div>
+
       <div className="mt-10 flex flex-wrap gap-8 justify-center">
+        {/* Conditional rendering of buttons based on userInfo */}
         {userInfo ? (
           <Link to="/mynotes">
             <Button size="xl" gradientDuoTone="greenToBlue">
@@ -44,10 +46,12 @@ const LandingPage = () => {
           </>
         )}
       </div>
+
       <div className="mt-20 w-full px-4 sm:px-8 lg:px-16">
         <Features />
       </div>
-      <section className=" text-white py-12 px-6 rounded-lg shadow-md">
+
+      <section className="text-white py-12 px-6 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
           Get in Touch
         </h2>
