@@ -28,7 +28,7 @@ const RegisterScreen = () => {
     if (userInfo) {
       navigate("/mynotes");
     }
-  }, [navigate, userInfo]);
+  }, [userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();

@@ -18,15 +18,14 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../actions/userActions";
-
+import useUserStore from "../stores/userStore";
 const Nav = ({ setSearch }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, logout } = useUserStore();
+
 
   const logoutHandler = () => {
-    dispatch(logout("/"));
+    logout("/");
     navigate("/");
   };
 
