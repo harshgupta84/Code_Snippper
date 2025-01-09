@@ -64,7 +64,7 @@ const userStore = (set, get) => ({
   },
 
   // Update Profile Function
-  updateProfile: async (name, email, password, pic) => {
+  updateProfile: async (user) => {
     try {
       const { userInfo } = get();
 
@@ -81,8 +81,8 @@ const userStore = (set, get) => ({
         },
       };
 
-      const { data } = await axios.put("/api/users/profile", { name, email, password, pic }, config);
-
+      const { data } = await axios.post("/api/users/profile", user, config);
+      
       set({ userInfo: data, loading: false, success: true });
       localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {

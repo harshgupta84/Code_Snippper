@@ -13,10 +13,10 @@ const LoginScreen = () => {
   const { loading, error, userInfo, login } = useUserStore();
 
   useEffect(() => {
-    if (userInfo!==null) {
+    if (userInfo) {
       navigate("/mynotes");
     }
-  }, [navigate, userInfo]);
+  }, [userInfo]);
 
   const submitHandler = (e) => {
     e.preventDefault();
