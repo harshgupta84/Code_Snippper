@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { Accordion, Button, Card, Badge, Blockquote } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteNoteAction, listNotes } from "../../actions/notesAction";
 import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import jsPDF from "jspdf";
 import QRCode from "qrcode";
@@ -21,7 +19,7 @@ import useUserStore from "../../stores/userStore";
 
 
 const MyNotes = ({ search }) => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const { loading, error, notes, deleteNote,listNotes } = useNotesStore();

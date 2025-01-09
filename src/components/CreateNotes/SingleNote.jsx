@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { deleteNoteAction, updateNoteAction } from "../../actions/notesAction";
 import ErrorMessage from "../utils/ErrorMessage";
 import LoadingSpinner from "../utils/LodingSpinner";
 import { Button, Label, TextInput, Card } from "flowbite-react";
@@ -9,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { Toaster } from "react-hot-toast";
 import useNotesStore from "../../stores/notesStore";
-import useUserStore from "../../stores/userStore";
+
 
 const SingleNote = () => {
   const { id } = useParams();
