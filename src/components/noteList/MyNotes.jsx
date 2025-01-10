@@ -76,8 +76,9 @@ const MyNotes = ({ search }) => {
 
   return (
     <div className="mt-10 mb-4 min-h-screen px-4">
-      {error && <ErrorMessage error={error} />}
-      <Toaster />
+    <Toaster />
+      {error && toast.error(error)}
+      
       <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white text-center">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">

@@ -72,7 +72,7 @@ const userStore = (set, get) => ({
         throw new Error("User not authenticated.");
       }
 
-      set({ loading: true, error: null });
+      set({ loading: true, error: null ,success: false});
 
       const config = {
         headers: {
@@ -98,6 +98,11 @@ const userStore = (set, get) => ({
   logout: () => {
     localStorage.removeItem("userInfo");
     set({ userInfo: null, error: null });
+  },
+
+  //reset handeler
+  resetHandler: () => {
+    set({ success: false , error: null ,loading: false});
   },
 });
 
