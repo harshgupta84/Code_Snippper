@@ -10,7 +10,7 @@ import {
   HarmBlockThreshold,
 } from "@google/generative-ai";
 import useNotesStore from "../../stores/notesStore";
-
+import useUserStore from "../../stores/userStore";
 
 
 const CreateNote = () => {
@@ -55,7 +55,7 @@ const CreateNote = () => {
   const navigate = useNavigate();
 
   const { error, createNote } = useNotesStore();
-
+  const { userInfo } = useUserStore();
   const resetHandler = () => {
     setTitle("");
     setCategory("");
@@ -64,9 +64,12 @@ const CreateNote = () => {
 
   const updateHandler = (e) => {
     e.preventDefault();
+
     if (!title || !content || !category) return;
     createNote(title, content, category);
-    toast.success("Note Created Successfully 😁");
+    toast.success("Note Created Successfully 😁", {
+      duration: 5000,
+    });
     resetHandler();
     navigate("/mynotes");
   };

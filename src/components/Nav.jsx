@@ -82,9 +82,8 @@ const Nav = ({ setSearch }) => {
           <NavbarLink href="/" active>
             Home
           </NavbarLink>
-          <NavbarLink href="#">About</NavbarLink>
-          <NavbarLink href="#">How To use</NavbarLink>
-          <NavbarLink href="#">Contact</NavbarLink>
+          <NavbarLink href="/about">About</NavbarLink>
+          <NavbarLink href="https://www.markdownguide.org/basic-syntax/">How To use</NavbarLink>
           <Form className="d-flex">
             <Form.Control
               type="search"

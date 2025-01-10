@@ -4,6 +4,9 @@ import axios from "axios";
 import QRCode from "qrcode";
 import { Card, Badge, Button } from "flowbite-react";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import useNotesStore from "../stores/notesStore";
+import toast, { Toaster } from "react-hot-toast";
+import useUserStore from "../stores/userStore";
 
 const ViewNotes = () => {
   const { id } = useParams();
@@ -14,7 +17,8 @@ const ViewNotes = () => {
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
   const [qrCode, setQrCode] = useState("");
-
+  const { error, createNote } = useNotesStore();
+  const { userInfo } = useUserStore();
   // Fetching the note data
   useEffect(() => {
     const fetchNote = async () => {
@@ -34,7 +38,7 @@ const ViewNotes = () => {
 
   // QR Code generation
   const handleGenerateQR = async () => {
-    const noteUrl = `${window.location.origin}`+"/note/view/"+`${id}`;
+    const noteUrl = `${window.location.origin}` + "/note/view/" + `${id}`;
     try {
       const qrCodeUrl = await QRCode.toDataURL(noteUrl);
       setQrCode(qrCodeUrl);
@@ -42,16 +46,38 @@ const ViewNotes = () => {
       console.error("Error generating QR code:", err);
     }
   };
+  // resetHandler
+  const resetHandler = () => {
+    setTitle("");
+    setCategory("");
+    setContent("");
+  };
+  //handleCloneToLocal
+  const handleCloneToLocal = () => {
+    if (!userInfo) {
+      toast.error("Please Login to Clone the Note");
+      return;
+    }
+    if (!title || !content || !category) return;
+    createNote(title, content, category);
+    toast.success("Note Created Successfully 😁");
+    resetHandler();
+    navigate("/mynotes");
+  };
 
   return (
     <div>
+      <Toaster />
       <div className="mb-4">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white m-10">
           Shared Note Preview
         </h1>
-        <div className="m-10 flex justify-start">
-          <Button color="info" onClick={handleGenerateQR}>
+        <div className="m-10 p-12 flex items-center gap-4">
+          <Button color="info" onClick={handleGenerateQR} aria-label="Generate QR Code">
             Generate QR Code
+          </Button>
+          <Button color="info" onClick={handleCloneToLocal} aria-label="Clone to Local">
+            Clone to Local
           </Button>
         </div>
         {qrCode && (

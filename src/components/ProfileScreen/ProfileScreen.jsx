@@ -6,9 +6,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import axios from "axios";
-
 import useUserStore from "../../stores/userStore";
-
 import toast, { Toaster } from "react-hot-toast";
 
 const ProfileScreen = () => {
@@ -22,7 +20,7 @@ const ProfileScreen = () => {
   const [picMessage, setPicMessage] = useState("");
 
 
-  const { userInfo, loading, error, success, updateProfile } = useUserStore();
+  const { userInfo, loading, error, success, updateProfile, resetHandler } = useUserStore();
 
   useEffect(() => {
     if (!userInfo) {
@@ -31,6 +29,7 @@ const ProfileScreen = () => {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPic(userInfo.pic);
+      resetHandler();
     }
   }, [navigate, userInfo]);
 
@@ -57,24 +56,29 @@ const ProfileScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password === confirmPassword)
+    if (password === confirmPassword) {
       updateProfile({ name, email, password, pic });
+    } else {
+      toast.error("Passwords do not match.");
+    }
   };
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+  if (success === true) {
+    toast.success("Profile Updated Successfully")
+
   }
 
   return (
 
     <div className="flex justify-center items-center h-full">
       <Toaster />
+      {error && toast.error(error)}
       <div className="max-w-md mt-10 mb-10">
         <form className="flex flex-col gap-4" onSubmit={submitHandler}>
-          {success && (
-            toast.success("Profile Updated Successfully")
-          )}
-          {error && <ErrorMessage error={error} />}
+
           <div>
             <Label htmlFor="name" value="Name" />
             <TextInput
