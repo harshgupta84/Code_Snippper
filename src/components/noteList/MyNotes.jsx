@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { Accordion, Button, Card, Badge, Blockquote } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteNoteAction, listNotes } from "../../actions/notesAction";
 import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import jsPDF from "jspdf";
 import QRCode from "qrcode";
@@ -16,46 +14,34 @@ import {
   WhatsappShareButton,
 } from "react-share";
 import { FaEdit, FaTrash, FaShareAlt, FaDownload, FaQrcode } from "react-icons/fa";
+import useNotesStore from "../../stores/notesStore";
+import useUserStore from "../../stores/userStore";
+
 
 const MyNotes = ({ search }) => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const noteList = useSelector((state) => state.noteList);
-  const { loading, error, notes } = noteList;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { loading, error, notes, deleteNote,listNotes } = useNotesStore();
 
-  const noteDelete = useSelector((state) => state.noteDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = noteDelete;
 
-  const noteCreate = useSelector((state) => state.noteCreate);
-  const { success: successCreate } = noteCreate;
+  const { userInfo } = useUserStore();
 
-  const noteUpdate = useSelector((state) => state.noteUpdate);
-  const { success: successUpdate } = noteUpdate;
 
   useEffect(() => {
-    dispatch(listNotes());
     if (!userInfo) {
       navigate("/");
     }
+    listNotes();
   }, [
-    dispatch,
     navigate,
     userInfo,
-    successCreate,
-    successDelete,
-    successUpdate,
+    
   ]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
-      dispatch(deleteNoteAction(id));
+      deleteNote(id);
     }
   };
 
@@ -90,8 +76,9 @@ const MyNotes = ({ search }) => {
 
   return (
     <div className="mt-10 mb-4 min-h-screen px-4">
-      {error && <ErrorMessage error={error} />}
-      <Toaster />
+    <Toaster />
+      {error && toast.error(error)}
+      
       <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-5xl dark:text-white text-center">
         Welcome{" "}
         <span className="text-blue-600 dark:text-blue-500">

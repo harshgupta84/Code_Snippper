@@ -15,18 +15,16 @@ import {
 } from "flowbite-react";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../actions/userActions";
+import useUserStore from "../stores/userStore";
 
 const Nav = ({ setSearch }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo, logout } = useUserStore();
+
 
   const logoutHandler = () => {
-    dispatch(logout("/"));
+    logout("/");
     navigate("/");
   };
 
@@ -84,9 +82,8 @@ const Nav = ({ setSearch }) => {
           <NavbarLink href="/" active>
             Home
           </NavbarLink>
-          <NavbarLink href="#">About</NavbarLink>
-          <NavbarLink href="#">How To use</NavbarLink>
-          <NavbarLink href="#">Contact</NavbarLink>
+          <NavbarLink href="/about">About</NavbarLink>
+          <NavbarLink href="https://www.markdownguide.org/basic-syntax/">How To use</NavbarLink>
           <Form className="d-flex">
             <Form.Control
               type="search"

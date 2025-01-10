@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { createNoteAction } from "../../actions/notesAction";
 import ErrorMessage from "../utils/ErrorMessage";
 import { Card, Button, Label, TextInput } from "flowbite-react";
 import MarkdownPreview from "@uiw/react-markdown-preview";
@@ -11,6 +9,9 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
+import useNotesStore from "../../stores/notesStore";
+import useUserStore from "../../stores/userStore";
+
 
 const CreateNote = () => {
   const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
@@ -52,10 +53,9 @@ const CreateNote = () => {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const noteCreate = useSelector((state) => state.noteCreate);
-  const { loading, error } = noteCreate;
 
+  const { error, createNote } = useNotesStore();
+  const { userInfo } = useUserStore();
   const resetHandler = () => {
     setTitle("");
     setCategory("");
@@ -64,9 +64,12 @@ const CreateNote = () => {
 
   const updateHandler = (e) => {
     e.preventDefault();
+
     if (!title || !content || !category) return;
-    dispatch(createNoteAction(title, content, category));
-    toast.success("Note Created Successfully 😁");
+    createNote(title, content, category);
+    toast.success("Note Created Successfully 😁", {
+      duration: 5000,
+    });
     resetHandler();
     navigate("/mynotes");
   };

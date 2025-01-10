@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { deleteNoteAction, updateNoteAction } from "../../actions/notesAction";
 import ErrorMessage from "../utils/ErrorMessage";
 import LoadingSpinner from "../utils/LodingSpinner";
 import { Button, Label, TextInput, Card } from "flowbite-react";
 import { useNavigate, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { Toaster } from "react-hot-toast";
+import useNotesStore from "../../stores/notesStore";
+
 
 const SingleNote = () => {
   const { id } = useParams();
@@ -17,17 +17,14 @@ const SingleNote = () => {
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
 
-  const dispatch = useDispatch();
 
-  const noteUpdate = useSelector((state) => state.noteUpdate);
-  const { loading, error } = noteUpdate;
+  const { loading, error, updateNote, deleteNote } = useNotesStore();
 
-  const noteDelete = useSelector((state) => state.noteDelete);
-  const { loading: loadingDelete, error: errorDelete } = noteDelete;
+
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
-      dispatch(deleteNoteAction(id));
+      deleteNote(id);
     }
     navigate("/mynotes");
   };
@@ -53,14 +50,14 @@ const SingleNote = () => {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updateNoteAction(id, title, content, category));
+    updateNote(id, title, content, category);
     if (!title || !content || !category) return;
 
     resetHandler();
     navigate("/mynotes");
   };
 
-  if (loading || loadingDelete) {
+  if (loading ) {
     return <LoadingSpinner />;
   }
 
@@ -68,7 +65,7 @@ const SingleNote = () => {
     <div className="mt-10 mb-10">
       <form className="max-w-screen mx-80" onSubmit={updateHandler}>
         {error && <ErrorMessage error={error} />}
-        {errorDelete && <ErrorMessage error={errorDelete} />}
+  
         <Toaster />
         <div className="mb-4">
           <Label htmlFor="title" value="Title" />
@@ -110,7 +107,7 @@ const SingleNote = () => {
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Note Preview
               </h5>
-              <MarkdownPreview  style={{ padding: 40 ,textAlign:"left"}} source={content} />
+              <MarkdownPreview style={{ padding: 40, textAlign: "left" }} source={content} />
               <p className="text-xs text-gray-500 hover:underline">
                 Updating on - {new Date().toLocaleDateString()}
               </p>

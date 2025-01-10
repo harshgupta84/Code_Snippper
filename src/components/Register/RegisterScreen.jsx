@@ -4,10 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 import { Cloudinary } from "@cloudinary/url-gen";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../actions/userActions";
 import ErrorMessage from "../utils/ErrorMessage";
 import LoadingSpinner from "../utils/LodingSpinner";
+import useUserStore from "../../stores/userStore";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -21,25 +20,24 @@ const RegisterScreen = () => {
   const [message, setMessage] = useState(null);
   const [picMessage, setPicMessage] = useState(null);
 
-  const dispatch = useDispatch();
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, error, userInfo } = userRegister;
+  const { loading, error, userInfo, register } = useUserStore();
 
   useEffect(() => {
     if (userInfo) {
       navigate("/mynotes");
     }
-  }, [navigate, userInfo]);
+  }, [userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(register(name, email, password, pic));
+      await register(name, email, password, pic);
       setMessage(null);
     }
   };
+
 
   const cloudinary = new Cloudinary({ cloud: { cloudName: "dimugtqll" } });
 

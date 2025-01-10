@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Button, Checkbox, Label, TextInput, FileInput } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { updateProfile } from "../../actions/userActions";
+
 import LoadingSpinner from "../utils/LodingSpinner";
 import ErrorMessage from "../utils/ErrorMessage";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import useUserStore from "../../stores/userStore";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pic, setPic] = useState("");
@@ -18,11 +19,8 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picMessage, setPicMessage] = useState("");
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
-  const userUpdate = useSelector((state) => state.userUpdate);
-  const { loading, error, success } = userUpdate;
+  const { userInfo, loading, error, success, updateProfile, resetHandler } = useUserStore();
 
   useEffect(() => {
     if (!userInfo) {
@@ -31,6 +29,7 @@ const ProfileScreen = () => {
       setName(userInfo.name);
       setEmail(userInfo.email);
       setPic(userInfo.pic);
+      resetHandler();
     }
   }, [navigate, userInfo]);
 
@@ -57,22 +56,29 @@ const ProfileScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password === confirmPassword)
-      dispatch(updateProfile({ name, email, password, pic }));
+    if (password === confirmPassword) {
+      updateProfile({ name, email, password, pic });
+    } else {
+      toast.error("Passwords do not match.");
+    }
   };
 
   if (loading) {
     return <LoadingSpinner />;
   }
+  if (success === true) {
+    toast.success("Profile Updated Successfully")
+
+  }
 
   return (
+
     <div className="flex justify-center items-center h-full">
+      <Toaster />
+      {error && toast.error(error)}
       <div className="max-w-md mt-10 mb-10">
         <form className="flex flex-col gap-4" onSubmit={submitHandler}>
-          {success && (
-            <ErrorMessage error={"Updated Successfully"}></ErrorMessage>
-          )}
-          {error && <ErrorMessage error={error} />}
+
           <div>
             <Label htmlFor="name" value="Name" />
             <TextInput
