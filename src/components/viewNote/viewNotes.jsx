@@ -4,9 +4,9 @@ import axios from "axios";
 import QRCode from "qrcode";
 import { Card, Badge, Button } from "flowbite-react";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import useNotesStore from "../stores/notesStore";
+import useNotesStore from "../../stores/notesStore";
 import toast, { Toaster } from "react-hot-toast";
-import useUserStore from "../stores/userStore";
+import useUserStore from "../../stores/userStore";
 
 const ViewNotes = () => {
   const { id } = useParams();
