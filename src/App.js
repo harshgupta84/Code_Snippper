@@ -11,7 +11,7 @@ import MyNotes from "./components/noteList/MyNotes";
 import CreateNote from "./components/CreateNotes/CreateNote";
 import SingleNote from "./components/CreateNotes/SingleNote";
 import AboutPage from "./components/About/AboutPage";
-import ViewNotes from "./viewNote/viewNotes";
+import ViewNotes from "./components/viewNote/viewNotes";
 
 const App = () => {
   const [search, setSearch] = useState("");
